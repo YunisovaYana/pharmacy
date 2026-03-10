@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное - ДоброТека</title>
+    <style>
+        :root {
+            --header-blue: #A5E5FF;
+            --sidebar-blue: #A5E5FF;
+            --card-blue: #7ec8f0;
+            --card-blue-light: #b8e0f7;
+            --button-blue: #5bb8e8;
+            --dark-blue: #0021F5;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background-color: var(--header-blue);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: var(--dark-blue);
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: var(--content-max-width);
+        }
+
+        .page-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* ==================== FAVOURITES STYLES ==================== */
+        .favourites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .favourite-card {
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .favourite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .favourite-image {
+            width: 100%;
+            height: 180px;
+            background-color: var(--white);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .favourite-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 15px;
+        }
+
+        .favourite-category {
+            background-color: var(--white);
+            color: var(--dark-blue);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+            align-self: center;
+        }
+
+        .favourite-name {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .favourite-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-blue);
+            margin: 15px 0;
+        }
+
+        .favourite-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .favourite-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .favourite-btn-primary {
+            background-color: var(--dark-blue);
+            color: var(--white);
+        }
+
+        .favourite-btn-primary:hover {
+            background-color: var(--button-blue);
+            transform: scale(1.02);
+        }
+
+        .favourite-btn-danger {
+            background-color: #ff4d4d;
+            color: var(--white);
+        }
+
+        .favourite-btn-danger:hover {
+            background-color: #ff3333;
+            transform: scale(1.02);
+        }
+
+        .favourite-btn img {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) invert(1);
+        }
+
+        .favourites-empty {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+        }
+
+        .favourites-empty p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .favourites-empty-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .favourites-empty-btn:hover {
+            background-color: var(--button-blue);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background-color: var(--header-blue);
+            padding: 50px 60px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+        }
+
+        .footer-headline {
+            font-size: 24px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-contact p {
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .footer-phone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 19px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .footer-phone-icon {
+            width: 35px;
+            height: 35px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .footer-phone-icon img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-social a {
+            width: 50px;
+            height: 50px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .footer-social a img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: right;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--dark-blue);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(91, 184, 232, 0.5);
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            .header-inner {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .header-nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .footer {
+                padding: 40px 20px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 35px;
+            }
+            .footer-links {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 24px;
+            }
+            .favourites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-img">
+                    <img src="img/logo.png" alt="Логотип" id="logo-img">
+                </div>
+                <span>ДоброТека</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Главная</a>
+                <a href="about.html">О нас</a>
+                <a href="catalog.html">Каталог</a>
+                <a href="contacts.html">Контакты</a>
+                <a href="basket.html">Корзина</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <h1 class="page-title">Избранное</h1>
+            
+            <div id="favouritesContainer">
+                <!-- Избранное будет загружено сюда -->
+                <div class="favourites-empty">
+                    <p>Загрузка...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3 class="footer-headline">Ассортимент, от которого здоровеешь уже при входе</h3>
+            <div class="footer-grid">
+                <div class="footer-contact">
+                    <p>Остались вопросы? Звоните</p>
+                    <div class="footer-phone">
+                        <div class="footer-phone-icon">
+                            <img src="img/Phone.png" alt="Телефон">
+                        </div>
+                        <span>+7 (980) 789-78-90</span>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="#">
+                        <img src="img/Telegram App.png" alt="Telegram">
+                    </a>
+                    <a href="#">
+                        <img src="img/Twitter Bird.png" alt="Twitter">
+                    </a>
+                    <a href="#">
+                        <img src="img/Facebook.png" alt="Facebook">
+                    </a>
+                    <a href="#">
+                        <img src="img/VK Circled.png" alt="VK">
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="catalog.html">Каталог</a>
+                    <a href="about.html">О нас</a>
+                    <a href="basket.html">Корзина</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                © ДоброТека. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные о товарах (копия из каталога для корректного отображения)
+        const products = {
+            1: { name: "Аскорбиновая кислота", category: "Витамины", price: "60 ₽", priceValue: 60, image: "img/Cat/ascorbinka.png" },
+            2: { name: "Кальций D3 Форте", category: "Витамины", price: "930 ₽", priceValue: 930, image: "img/Cat/kalziy.png" },
+            3: { name: "Магнелис B6", category: "Витамины", price: "760 ₽", priceValue: 760, image: "img/Cat/magnelis.png" },
+            4: { name: "Амиксин", category: "Имунные лекарства", price: "1100 ₽", priceValue: 1100, image: "img/Cat/amixin.png" },
+            5: { name: "Изопринозин", category: "Имунные лекарства", price: "980 ₽", priceValue: 980, image: "img/Cat/izoprinozin.png" },
+            6: { name: "Деринат спрей", category: "Имунные лекарства", price: "510 ₽", priceValue: 510, image: "img/Cat/derinat.png" },
+            7: { name: "Грамицидин C Реневал", category: "ОРВИ и ОРЗ", price: "442 ₽", priceValue: 442, image: "img/Cat/gramizidin.png" },
+            8: { name: "Каметон", category: "ОРВИ и ОРЗ", price: "190 ₽", priceValue: 190, image: "img/Cat/kameton.png" },
+            9: { name: "Гексорал Табс Классик", category: "ОРВИ и ОРЗ", price: "270 ₽", priceValue: 270, image: "img/Cat/geksoral.png" },
+            10: { name: "Зодак", category: "От аллергии", price: "330 ₽", priceValue: 330, image: "img/Cat/zodak.png" },
+            11: { name: "Дуоназе", category: "От аллергии", price: "900 ₽", priceValue: 900, image: "img/Cat/duonaze.png" },
+            12: { name: "Кларитин", category: "От аллергии", price: "280 ₽", priceValue: 280, image: "img/Cat/klaritin.png" },
+            13: { name: "Бинт нестерильный", category: "Мед товары", price: "70 ₽", priceValue: 70, image: "img/Cat/bint.png" },
+            14: { name: "Лейкопластырь", category: "Мед товары", price: "130 ₽", priceValue: 130, image: "img/Cat/plastry.png" },
+            15: { name: "Перчатки медицинские", category: "Мед товары", price: "230 ₽", priceValue: 230, image: "img/Cat/perchatki.png" }
+        };
+
+        // Функция для рендеринга избранного
+        function renderFavourites() {
+            const container = document.getElementById('favouritesContainer');
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+
+            if (favourites.length === 0) {
+                container.innerHTML = `
+                    <div class="favourites-empty">
+                        <p>В избранном пока нет товаров</p>
+                        <a href="catalog.html" class="favourites-empty-btn">Перейти в каталог</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="favourites-grid">';
+
+            favourites.forEach((item, index) => {
+                const productInfo = products[item.id] || item;
+                
+                html += `
+                    <div class="favourite-card">
+                        <div class="favourite-image">
+                            <img src="${productInfo.image}" alt="${productInfo.name}">
+                        </div>
+                        <span class="favourite-category">${productInfo.category}</span>
+                        <h3 class="favourite-name">${productInfo.name}</h3>
+                        <div class="favourite-price">${productInfo.price}</div>
+                        <div class="favourite-actions">
+                            <button class="favourite-btn favourite-btn-primary" onclick="addToCartFromFavourites(${index})">
+                                <img src="img/Shopping Basket.png" alt="Корзина">
+                                В корзину
+                            </button>
+                            <button class="favourite-btn favourite-btn-danger" onclick="removeFromFavourites(${index})">
+                                <img src="img/Delete.png" alt="Удалить">
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Функция для удаления из избранного
+        function removeFromFavourites(index) {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            favourites.splice(index, 1);
+            localStorage.setItem('favourites', JSON.stringify(favourites));
+            renderFavourites();
+        }
+
+        // Функция для добавления в корзину из избранного
+        function addToCartFromFavourites(index) {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const item = favourites[index];
+            
+            // Проверяем, есть ли товар в корзине
+            const existingItem = cart.find(cartItem => cartItem.id === item.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Показываем уведомление
+            showNotification('Товар добавлен в корзину');
+        }
+
+        // Функция для показа уведомления
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--dark-blue);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 3000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            `;
+
+            // Добавляем анимацию
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
+
+        // Рендерим избранное при загрузке
+        document.addEventListener('DOMContentLoaded', renderFavourites);
+    </script>
+
+</body>
+</html>

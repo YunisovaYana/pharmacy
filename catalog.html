@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ДоброТека - Каталог</title>
+    <style>
+        /* ==================== СТИЛИ (без изменений, как в вашем файле) ==================== */
+        :root {
+            --header-blue: #A5E5FF;
+            --sidebar-blue: #A5E5FF;
+            --card-blue: #7ec8f0;
+            --card-blue-light: #b8e0f7;
+            --button-blue: #5bb8e8;
+            --dark-blue: #0021F5;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --content-max-width: 1200px;
+            --sidebar-width: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background-color: var(--header-blue);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #0021F5;
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-blue);
+            padding: 30px 10px;
+            border-radius: 0 25px 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            z-index: 1001;
+        }
+
+        .sidebar-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #A5E5FF;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 0 auto;
+            position: relative; /* Для счетчика */
+        }
+
+        .sidebar-icon:hover {
+            background-color:#ffffff;
+            transform: scale(1.1);
+        }
+
+        .sidebar-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        /* Счетчики для иконок */
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--dark-blue);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+            padding-left: calc(var(--sidebar-width) + 50px);
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: var(--content-max-width);
+        }
+
+        /* ==================== CATALOG ==================== */
+        .catalog-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            background-color: var(--card-blue-light);
+            color: var(--text-dark);
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            background-color: var(--white);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--dark-blue);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-action-btn {
+            width: 35px;
+            height: 35px;
+            background-color: var(--dark-blue);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .product-action-btn:hover {
+            background-color: var(--button-blue);
+            transform: scale(1.1);
+        }
+
+        .product-action-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        /* ==================== MODAL ==================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 25px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--card-blue-light);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-dark);
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        .modal-image {
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-image img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-category {
+            background-color: var(--card-blue-light);
+            color: var(--dark-blue);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .modal-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark-blue);
+            margin-bottom: 25px;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .modal-features {
+            margin-bottom: 25px;
+        }
+
+        .modal-features h4 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .modal-features ul {
+            list-style: none;
+        }
+
+        .modal-features li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .modal-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--dark-blue);
+            font-weight: bold;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-btn-primary {
+            background-color: var(--dark-blue);
+            color: var(--white);
+        }
+
+        .modal-btn-primary:hover {
+            background-color: var(--button-blue);
+            transform: translateY(-2px);
+        }
+
+        .modal-btn-secondary {
+            background-color: var(--card-blue-light);
+            color: var(--text-dark);
+        }
+
+        .modal-btn-secondary:hover {
+            background-color: var(--card-blue);
+            transform: translateY(-2px);
+        }
+
+        .modal-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .modal-btn-secondary img {
+            filter: none;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background-color: var(--header-blue);
+            padding: 50px 60px;
+            width: 100%;
+            margin-left: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+        }
+
+        .footer-headline {
+            font-size: 24px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-contact p {
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .footer-phone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 19px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .footer-phone-icon {
+            width: 35px;
+            height: 35px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .footer-phone-icon img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-social a {
+            width: 50px;
+            height: 50px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .footer-social a img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: right;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0021F5;
+        }
+
+        .footer-copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(91, 184, 232, 0.5);
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                padding-left: 20px;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 35px;
+            }
+            .footer-links {
+                text-align: center;
+            }
+            .header {
+                padding: 15px 20px;
+            }
+            .header-inner {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .header-nav {
+                gap: 15px;
+                font-size: 14px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .footer {
+                padding: 40px 20px;
+            }
+            .modal-body {
+                padding: 25px;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .catalog-title {
+                font-size: 24px;
+            }
+            .category-header {
+                font-size: 18px;
+                padding: 12px 20px;
+            }
+            .product-image {
+                height: 150px;
+            }
+            .modal-title {
+                font-size: 22px;
+            }
+            .modal-price {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-img">
+                    <img src="img/logo.png" alt="Логотип" id="logo-img">
+                </div>
+                <span>ДоброТека</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Главная</a>
+                <a href="about.html">О нас</a>
+                <a href="catalog.html">Каталог</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+        <a href="favourites.html" class="sidebar-icon-link" style="position: relative;">
+            <div class="sidebar-icon heart" id="favourites-sidebar-icon">
+                <img src="img/Love.png" alt="Избранное" id="heart-icon">
+                <span class="badge" id="favourites-count" style="display: none;">0</span>
+            </div>
+        </a>
+        <a href="basket.html" class="sidebar-icon-link" style="position: relative;">
+            <div class="sidebar-icon" id="cart-sidebar-icon">
+                <img src="img/Shopping Basket.png" alt="Корзина" id="cart-icon">
+                <span class="badge" id="cart-count" style="display: none;">0</span>
+            </div>
+        </a>
+        <a href="delivery.html" class="sidebar-icon-link">
+            <div class="sidebar-icon">
+                <img src="img/Truck.png" alt="Доставка" id="delivery-icon">
+            </div>
+        </a>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            
+            <h1 class="catalog-title">Каталог</h1>
+
+            <!-- ==================== ВИТАМИНЫ ==================== -->
+            <section class="category-section">
+                <h2 class="category-header">Витамины</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="1">
+                        <div class="product-image">
+                            <img src="img/Cat/ascorbinka.png" alt="Аскорбиновая кислота">
+                        </div>
+                        <p class="product-name">Аскорбиновая кислота</p>
+                        <div class="product-footer">
+                            <span class="product-price">60 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="1">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="1">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="2">
+                        <div class="product-image">
+                            <img src="img/Cat/kalziy.png" alt="Кальций D3 Форте">
+                        </div>
+                        <p class="product-name">Кальций D3 Форте</p>
+                        <div class="product-footer">
+                            <span class="product-price">930 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="2">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="2">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="3">
+                        <div class="product-image">
+                            <img src="img/Cat/magnelis.png" alt="Магнелис B6">
+                        </div>
+                        <p class="product-name">Магнелис B6</p>
+                        <div class="product-footer">
+                            <span class="product-price">760 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="3">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="3">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== ИММУННЫЕ ЛЕКАРСТВА ==================== -->
+            <section class="category-section">
+                <h2 class="category-header">Имунные лекарства</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="4">
+                        <div class="product-image">
+                            <img src="img/Cat/amixin.png" alt="Амиксин">
+                        </div>
+                        <p class="product-name">Амиксин</p>
+                        <div class="product-footer">
+                            <span class="product-price">1100 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="4">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="4">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="5">
+                        <div class="product-image">
+                            <img src="img/Cat/izoprinozin.png" alt="Изопринозин">
+                        </div>
+                        <p class="product-name">Изопринозин</p>
+                        <div class="product-footer">
+                            <span class="product-price">980 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="5">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="5">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="6">
+                        <div class="product-image">
+                            <img src="img/Cat/derinat.png" alt="Деринат спрей">
+                        </div>
+                        <p class="product-name">Деринат спрей</p>
+                        <div class="product-footer">
+                            <span class="product-price">510 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="6">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="6">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== ОРВИ И ОРЗ ==================== -->
+            <section class="category-section">
+                <h2 class="category-header">ОРВИ и ОРЗ</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="7">
+                        <div class="product-image">
+                            <img src="img/Cat/gramizidin.png" alt="Грамицидин C Ренеал">
+                        </div>
+                        <p class="product-name">Грамицидин C Ренеал</p>
+                        <div class="product-footer">
+                            <span class="product-price">442 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="7">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="7">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="8">
+                        <div class="product-image">
+                            <img src="img/Cat/kameton.png" alt="Каметон">
+                        </div>
+                        <p class="product-name">Каметон</p>
+                        <div class="product-footer">
+                            <span class="product-price">190 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="8">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="8">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="9">
+                        <div class="product-image">
+                            <img src="img/Cat/geksoral.png" alt="Гексорал Табс Классик">
+                        </div>
+                        <p class="product-name">Гексорал Табс Классик</p>
+                        <div class="product-footer">
+                            <span class="product-price">270 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="9">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="9">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== ОТ АЛЛЕРГИИ ==================== -->
+            <section class="category-section">
+                <h2 class="category-header">От аллергии</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="10">
+                        <div class="product-image">
+                            <img src="img/Cat/zodak.png" alt="Зодак">
+                        </div>
+                        <p class="product-name">Зодак</p>
+                        <div class="product-footer">
+                            <span class="product-price">330 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="10">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="10">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="11">
+                        <div class="product-image">
+                            <img src="img/Cat/duonaze.png" alt="Дуоназе спрей">
+                        </div>
+                        <p class="product-name">Дуоназе спрей</p>
+                        <div class="product-footer">
+                            <span class="product-price">900 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="11">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="11">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="12">
+                        <div class="product-image">
+                            <img src="img/Cat/klaritin.png" alt="Кларитин">
+                        </div>
+                        <p class="product-name">Кларитин</p>
+                        <div class="product-footer">
+                            <span class="product-price">280 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="12">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="12">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== МЕД ТОВАРЫ ==================== -->
+            <section class="category-section">
+                <h2 class="category-header">Мед товары</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="13">
+                        <div class="product-image">
+                            <img src="img/Cat/bint.png" alt="Бинт нестерильный">
+                        </div>
+                        <p class="product-name">Бинт нестерильный</p>
+                        <div class="product-footer">
+                            <span class="product-price">70 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="13">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="13">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="14">
+                        <div class="product-image">
+                            <img src="img/Cat/plastry.png" alt="Лейкопластырь">
+                        </div>
+                        <p class="product-name">Лейкопластырь</p>
+                        <div class="product-footer">
+                            <span class="product-price">130 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="14">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="14">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card" data-product="15">
+                        <div class="product-image">
+                            <img src="img/Cat/perchatki.png" alt="Перчатки медицинские">
+                        </div>
+                        <p class="product-name">Перчатки медицинские</p>
+                        <div class="product-footer">
+                            <span class="product-price">230 ₽</span>
+                            <div class="product-actions">
+                                <button class="product-action-btn add-to-favourite" data-product="15">
+                                    <img src="img/Love.png" alt="В избранное">
+                                </button>
+                                <button class="product-action-btn add-to-cart" data-product="15">
+                                    <img src="img/Shopping Basket.png" alt="В корзину">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ==================== MODAL ==================== -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="" alt="" id="modalImg">
+                </div>
+                <div class="modal-info">
+                    <span class="modal-category" id="modalCategory">Категория</span>
+                    <h2 class="modal-title" id="modalTitle">Название товара</h2>
+                    <div class="modal-price" id="modalPrice">0 ₽</div>
+                    <p class="modal-description" id="modalDescription">Описание товара</p>
+                    <div class="modal-features">
+                        <h4>Характеристики:</h4>
+                        <ul id="modalFeatures">
+                            <li>Характеристика 1</li>
+                            <li>Характеристика 2</li>
+                            <li>Характеристика 3</li>
+                        </ul>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-primary" id="modalAddToCart">
+                            <img src="img/Shopping Basket.png" alt="Корзина">
+                            В корзину
+                        </button>
+                        <button class="modal-btn modal-btn-secondary" id="modalAddToFavourite">
+                            <img src="img/Love.png" alt="Избранное" style="filter: none;">
+                            В избранное
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3 class="footer-headline">Ассортимент, от которого здоровеешь уже при входе</h3>
+            <div class="footer-grid">
+                <div class="footer-contact">
+                    <p>Остались вопросы? Звоните</p>
+                    <div class="footer-phone">
+                        <div class="footer-phone-icon">
+                            <img src="img/Phone.png" alt="Телефон" id="footer-phone-icon">
+                        </div>
+                        <span>+7 (980) 789-78-90</span>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="#" id="social-telegram">
+                        <img src="img/Telegram App.png" alt="Telegram">
+                    </a>
+                    <a href="#" id="social-twitter">
+                        <img src="img/Twitter Bird.png" alt="Twitter">
+                    </a>
+                    <a href="#" id="social-facebook">
+                        <img src="img/Facebook.png" alt="Facebook">
+                                        </a>
+                    <a href="#" id="social-vk">
+                        <img src="img/VK Circled.png" alt="VK">
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="catalog.html">Каталог</a>
+                    <a href="about.html">О нас</a>
+                    <a href="basket.html">Корзина</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                © ДоброТека. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== PRODUCT DATA ====================
+        const products = {
+            1: {
+                name: "Аскорбиновая кислота",
+                category: "Витамины",
+                price: "60 ₽",
+                priceValue: 60,
+                image: "img/Cat/ascorbinka.png",
+                description: "Витамин C для укрепления иммунитета и поддержания общего тонуса организма. Подходит для ежедневного приема в сезон простуд.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 50 шт",
+                    "Дозировка: 50 мг",
+                    "Производитель: Россия"
+                ]
+            },
+            2: {
+                name: "Кальций D3 Форте",
+                category: "Витамины",
+                price: "930 ₽",
+                priceValue: 930,
+                image: "img/Cat/kalziy.png",
+                description: "Комплекс кальция и витамина D3 для укрепления костей и зубов. Рекомендуется при дефиците кальция и для профилактики остеопороза.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 100 шт",
+                    "Кальций: 500 мг + D3: 200 МЕ",
+                    "Производитель: Германия"
+                ]
+            },
+            3: {
+                name: "Магнелис B6",
+                category: "Витамины",
+                price: "760 ₽",
+                priceValue: 760,
+                image: "img/Cat/magnelis.png",
+                description: "Комплекс магния и витамина B6 для поддержки нервной системы. Помогает при стрессе, усталости и мышечных судорогах.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 50 шт",
+                    "Магний: 470 мг + B6: 5 мг",
+                    "Производитель: Россия"
+                ]
+            },
+            4: {
+                name: "Амиксин",
+                category: "Имунные лекарства",
+                price: "1100 ₽",
+                priceValue: 1100,
+                image: "img/Cat/amixin.png",
+                description: "Противовирусный препарат для лечения и профилактики гриппа и ОРВИ. Стимулирует выработку интерферона.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 10 шт",
+                    "Дозировка: 125 мг",
+                    "Производитель: Россия"
+                ]
+            },
+            5: {
+                name: "Изопринозин",
+                category: "Имунные лекарства",
+                price: "980 ₽",
+                priceValue: 980,
+                image: "img/Cat/izoprinozin.png",
+                description: "Противовирусный препарат с иммуномодулирующим действием. Эффективен при герпесе, ВПЧ, гриппе и ОРВИ. Стимулирует защитные силы организма.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 50 шт",
+                    "Дозировка: 500 мг",
+                    "Производитель: Португалия"
+                ]
+            },
+            6: {
+                name: "Деринат спрей",
+                category: "Имунные лекарства",
+                price: "510 ₽",
+                priceValue: 510,
+                image: "img/Cat/derinat.png",
+                description: "Иммуномодулирующий препарат для профилактики и лечения простудных заболеваний. Подходит для всей семьи.",
+                features: [
+                    "Форма выпуска: спрей",
+                    "Объем: 10 мл",
+                    "Действующее вещество: дезоксирибонуклеат натрия",
+                    "Производитель: Россия"
+                ]
+            },
+            7: {
+                name: "Грамицидин C Реневал",
+                category: "ОРВИ и ОРЗ",
+                price: "442 ₽",
+                priceValue: 442,
+                image: "img/Cat/gramizidin.png",
+                description: "Антибактериальный препарат для лечения инфекций горла и полости рта. Действует местно, не всасывается в кровь. Эффективен против бактерий.",
+                features: [
+                    "Форма выпуска: таблетки для рассасывания",
+                    "Количество: 20 шт",
+                    "Дозировка: 1,5 мг",
+                    "Производитель: Россия"
+                ]
+            },
+            8: {
+                name: "Каметон",
+                category: "ОРВИ и ОРЗ",
+                price: "190 ₽",
+                priceValue: 190,
+                image: "img/Cat/kameton.png",
+                description: "Аэрозоль для лечения заболеваний носа и горла. Обладает противовоспалительным, антисептическим и обезболивающим действием. Освежает и облегчает дыхание.",
+                features: [
+                    "Форма выпуска: аэрозоль",
+                    "Объём: 30 мл",
+                    "Состав: камфора, ментол, эвкалипт",
+                    "Производитель: Россия"
+                ]
+            },
+            9: {
+                name: "Гексорал Табс Классик",
+                category: "ОРВИ и ОРЗ",
+                price: "270 ₽",
+                priceValue: 270,
+                image: "img/Cat/geksoral.png",
+                description: "Таблетки для рассасывания при боли в горле. Обладают антисептическим и обезболивающим действием.",
+                features: [
+                    "Форма выпуска: таблетки для рассасывания",
+                    "Количество: 16 шт",
+                    "Вкус: апельсин",
+                    "Производитель: Франция"
+                ]
+            },
+            10: {
+                name: "Зодак",
+                category: "От аллергии",
+                price: "330 ₽",
+                priceValue: 330,
+                image: "img/Cat/zodak.png",
+                description: "Антигистаминный препарат для лечения аллергического ринита, крапивницы и других аллергических реакций.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 30 шт",
+                    "Действующее вещество: цетиризин",
+                    "Производитель: Чехия"
+                ]
+            },
+            11: {
+                name: "Дуоназе",
+                category: "От аллергии",
+                price: "900 ₽",
+                priceValue: 900,
+                image: "img/Cat/duonaze.png",
+                description: "Спрей для промывания носа на основе морской воды. Очищает слизистую и увлажняет носовую полость.",
+                features: [
+                    "Форма выпуска: назальный спрей",
+                    "Объем: 15 мл (120 доз)",
+                    "Действующее вещество: азеластин + флутиказон",
+                    "Производитель: Индия"
+                ]
+            },
+            12: {
+                name: "Кларитин",
+                category: "От аллергии",
+                price: "280 ₽",
+                priceValue: 280,
+                image: "img/Cat/klaritin.png",
+                description: "Современный антигистаминный препарат. Не вызывает сонливости, действует до 24 часов.",
+                features: [
+                    "Форма выпуска: таблетки",
+                    "Количество: 10 шт",
+                    "Действующее вещество: лоратадин",
+                    "Производитель: США"
+                ]
+            },
+            13: {
+                name: "Бинт нестерильный",
+                category: "Мед товары",
+                price: "70 ₽",
+                priceValue: 70,
+                image: "img/Cat/bint.png",
+                description: "Медицинский бинт для перевязки ран и фиксации повязок. Изготовлен из натуральной марли.",
+                features: [
+                    "Форма выпуска: бинт",
+                    "Размер: 5м x 10см",
+                    "Стерильность: нестерильный",
+                    "Производитель: Россия"
+                ]
+            },
+            14: {
+                name: "Лейкопластырь",
+                category: "Мед товары",
+                price: "130 ₽",
+                priceValue: 130,
+                image: "img/Cat/plastry.png",
+                description: "Набор лейкопластырей различных размеров для защиты мелких ран и ссадин. Гипоаллергенный.",
+                features: [
+                    "Форма выпуска: пластырь",
+                    "Количество: 20 шт",
+                    "Размеры: различные",
+                    "Производитель: Китай"
+                ]
+            },
+            15: {
+                name: "Перчатки медицинские",
+                category: "Мед товары",
+                price: "230 ₽",
+                priceValue: 230,
+                image: "img/Cat/perchatki.png",
+                description: "Одноразовые медицинские перчатки для защиты рук. Подходят для медицинских процедур и бытового использования.",
+                features: [
+                    "Форма выпуска: перчатки",
+                    "Количество: 50 пар",
+                    "Материал: нитрил",
+                    "Производитель: Малайзия"
+                ]
+            }
+        };
+
+        // ==================== STATE MANAGEMENT ====================
+        // Загружаем данные из localStorage или создаем пустые массивы
+        let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Элементы для счетчиков
+        const favouritesCountEl = document.getElementById('favourites-count');
+        const cartCountEl = document.getElementById('cart-count');
+
+        // ==================== UPDATE COUNTERS ====================
+        function updateCounters() {
+            // Обновляем счетчик избранного
+            if (favourites.length > 0) {
+                favouritesCountEl.textContent = favourites.length;
+                favouritesCountEl.style.display = 'flex';
+            } else {
+                favouritesCountEl.style.display = 'none';
+            }
+
+            // Обновляем счетчик корзины
+            if (cart.length > 0) {
+                cartCountEl.textContent = cart.length;
+                cartCountEl.style.display = 'flex';
+            } else {
+                cartCountEl.style.display = 'none';
+            }
+        }
+
+        // ==================== ADD TO FAVOURITES ====================
+        function addToFavourites(productId) {
+            const product = products[productId];
+            if (!product) return;
+
+            // Проверяем, есть ли уже товар в избранном
+            if (!favourites.some(item => item.id === productId)) {
+                favourites.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    priceValue: product.priceValue,
+                    image: product.image,
+                    category: product.category
+                });
+                
+                // Сохраняем в localStorage
+                localStorage.setItem('favourites', JSON.stringify(favourites));
+                
+                // Показываем уведомление
+                showNotification('Товар добавлен в избранное');
+                
+                // Обновляем счетчик
+                updateCounters();
+            } else {
+                showNotification('Товар уже в избранном');
+            }
+        }
+
+        // ==================== ADD TO CART ====================
+        function addToCart(productId) {
+            const product = products[productId];
+            if (!product) return;
+
+            // Проверяем, есть ли уже товар в корзине
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    priceValue: product.priceValue,
+                    image: product.image,
+                    category: product.category,
+                    quantity: 1
+                });
+            }
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Показываем уведомление
+            showNotification('Товар добавлен в корзину');
+            
+            // Обновляем счетчик
+            updateCounters();
+        }
+
+        // ==================== NOTIFICATION ====================
+        function showNotification(message) {
+            // Создаем элемент уведомления
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--dark-blue);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 3000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            `;
+
+            // Добавляем анимацию
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            document.body.appendChild(notification);
+
+            // Удаляем уведомление через 2 секунды
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
+
+        // ==================== MODAL FUNCTIONS ====================
+        const modal = document.getElementById('productModal');
+        let currentProductId = null;
+
+        // Открытие модального окна
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Не открываем модалку, если клик был по кнопке
+                if (e.target.closest('.product-action-btn')) return;
+                
+                const productId = this.getAttribute('data-product');
+                const product = products[productId];
+                
+                if (product) {
+                    currentProductId = productId;
+                    
+                    document.getElementById('modalImg').src = product.image;
+                    document.getElementById('modalImg').alt = product.name;
+                    document.getElementById('modalCategory').textContent = product.category;
+                    document.getElementById('modalTitle').textContent = product.name;
+                    document.getElementById('modalPrice').textContent = product.price;
+                    document.getElementById('modalDescription').textContent = product.description;
+                    
+                    // Заполняем характеристики
+                    const featuresList = document.getElementById('modalFeatures');
+                    featuresList.innerHTML = '';
+                    product.features.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.textContent = feature;
+                        featuresList.appendChild(li);
+                    });
+                    
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Кнопки в модальном окне
+        document.getElementById('modalAddToCart').addEventListener('click', function() {
+            if (currentProductId) {
+                addToCart(currentProductId);
+            }
+        });
+
+        document.getElementById('modalAddToFavourite').addEventListener('click', function() {
+            if (currentProductId) {
+                addToFavourites(currentProductId);
+            }
+        });
+
+        // Закрытие модального окна
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProductId = null;
+        }
+
+        // Закрытие по клику на overlay
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Закрытие по клавише Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // ==================== BUTTON HANDLERS ====================
+        // Обработчики для кнопок в карточках товаров
+        document.querySelectorAll('.add-to-favourite').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-product');
+                addToFavourites(productId);
+            });
+        });
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-product');
+                addToCart(productId);
+            });
+        });
+
+        // ==================== INITIALIZATION ====================
+        // Обновляем счетчики при загрузке страницы
+        updateCounters();
+
+        // Добавляем стили для счетчиков, если их нет
+        const style = document.createElement('style');
+        style.textContent = `
+            .sidebar-icon-link {
+                position: relative;
+                display: block;
+            }
+            .badge {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background-color: var(--dark-blue);
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                border: 2px solid white;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>

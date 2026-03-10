@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка и адреса - ДоброТека</title>
+    <style>
+        :root {
+            --header-blue: #A5E5FF;
+            --sidebar-blue: #A5E5FF;
+            --card-blue: #7ec8f0;
+            --card-blue-light: #b8e0f7;
+            --button-blue: #5bb8e8;
+            --dark-blue: #0021F5;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background-color: var(--header-blue);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: var(--dark-blue);
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70px;
+            background-color: var(--sidebar-blue);
+            padding: 30px 10px;
+            border-radius: 0 25px 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            z-index: 1001;
+        }
+
+        .sidebar-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #A5E5FF;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .sidebar-icon:hover {
+            background-color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .sidebar-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--dark-blue);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+            padding-left: calc(70px + 50px);
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: var(--content-max-width);
+        }
+
+        .page-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* ==================== DELIVERY STYLES ==================== */
+        .delivery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .info-card {
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .info-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .info-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Delivery Options */
+        .delivery-options {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--dark-blue);
+            border-radius: 2px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .option-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background-color: var(--card-blue-light);
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .option-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .option-content h4 {
+            font-size: 18px;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .option-content p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .option-price {
+            font-weight: bold;
+            color: var(--dark-blue);
+            font-size: 16px;
+        }
+
+        /* Pharmacies Section */
+        .pharmacies-section {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .pharmacies-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .pharmacy-card {
+            background-color: var(--card-blue-light);
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .pharmacy-card:hover {
+            border-color: var(--dark-blue);
+            transform: translateY(-3px);
+        }
+
+        .pharmacy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pharmacy-name {
+            font-size: 18px;
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+
+        .pharmacy-badge {
+            background-color: var(--white);
+            color: var(--dark-blue);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pharmacy-address {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .pharmacy-address img {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+        }
+
+        .pharmacy-metro {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            background-color: var(--white);
+            padding: 6px 12px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .metro-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .metro-circle.red { background-color: #e30613; }
+        .metro-circle.green { background-color: #029a55; }
+        .metro-circle.blue { background-color: #007acf; }
+        .metro-circle.orange { background-color: #f37021; }
+
+        .metro-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .pharmacy-schedule {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pharmacy-phone {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .pharmacy-phone img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .pharmacy-status {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-open {
+            background-color: #4CAF50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-closed {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .distance {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        /* Map Section */
+        .map-section {
+            background-color: var(--card-blue-light);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .map-placeholder {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 60px 20px;
+            margin: 20px 0;
+            border: 2px dashed var(--dark-blue);
+        }
+
+        .map-placeholder p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .map-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .map-btn:hover {
+            background-color: var(--button-blue);
+            transform: translateY(-2px);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background-color: var(--card-blue-light);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .faq-item:hover {
+            background-color: #c0e4fa;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        .faq-answer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 14px;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question img {
+            transform: rotate(180deg);
+        }
+
+        .faq-question img {
+            transition: 0.3s;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background-color: var(--header-blue);
+            padding: 50px 60px;
+            width: 100%;
+            margin-left: 70px;
+        }
+
+        .footer-content {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+        }
+
+        .footer-headline {
+            font-size: 24px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-contact p {
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .footer-phone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 19px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .footer-phone-icon {
+            width: 35px;
+            height: 35px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .footer-phone-icon img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-social a {
+            width: 50px;
+            height: 50px;
+            background-color: var(--button-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .footer-social a img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: right;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--dark-blue);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(91, 184, 232, 0.5);
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .info-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            .pharmacies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                padding-left: 20px;
+            }
+            .footer {
+                margin-left: 0;
+            }
+            .header {
+                padding: 15px 20px;
+            }
+            .header-inner {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .header-nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .footer {
+                padding: 40px 20px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 35px;
+            }
+            .footer-links {
+                text-align: center;
+            }
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 24px;
+            }
+            .option-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .option-icon {
+                margin: 0 auto;
+            }
+            .pharmacy-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-img">
+                    <img src="img/logo.png" alt="Логотип">
+                </div>
+                <span>ДоброТека</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Главная</a>
+                <a href="about.html">О нас</a>
+                <a href="catalog.html">Каталог</a>
+                <a href="contacts.html">Контакты</a>
+                <a href="basket.html">Корзина</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+        <a href="favourites.html" class="sidebar-icon-link" style="position: relative;">
+            <div class="sidebar-icon">
+                <img src="img/Love.png" alt="Избранное">
+                <span class="badge" id="favourites-count">0</span>
+            </div>
+        </a>
+        <a href="basket.html" class="sidebar-icon-link" style="position: relative;">
+            <div class="sidebar-icon">
+                <img src="img/Shopping Basket.png" alt="Корзина">
+                <span class="badge" id="cart-count">0</span>
+            </div>
+        </a>
+        <a href="delivery.html" class="sidebar-icon-link">
+            <div class="sidebar-icon">
+                <img src="img/Truck.png" alt="Доставка">
+            </div>
+        </a>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <h1 class="page-title">Доставка и самовывоз</h1>
+            
+            <div class="delivery-container">
+                <!-- Info Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3>Бесплатная доставка</h3>
+                        <p>При заказе от 2000₽ доставим бесплатно в любой район города</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Быстрая доставка</h3>
+                        <p>Доставим заказ за 2 часа в пределах МКАД</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>15 аптек</h3>
+                        <p>Более 15 аптек по городу для удобного самовывоза</p>
+                    </div>
+                </div>
+
+                <!-- Delivery Options -->
+                <div class="delivery-options">
+                    <h2 class="section-title">Способы получения</h2>
+                    <div class="options-grid">
+                        <div class="option-item">
+                            <div class="option-content">
+                                <h4>Курьерская доставка</h4>
+                                <p>Доставка курьером до двери. Курьер свяжется за 30 минут до приезда.</p>
+                                <p class="option-price">300 ₽</p>
+                            </div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-content">
+                                <h4>Самовывоз из аптеки</h4>
+                                <p>Заберите заказ самостоятельно в ближайшей аптеке. Без очереди!</p>
+                                <p class="option-price">Бесплатно</p>
+                            </div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-content">
+                                <h4>Экспресс-доставка</h4>
+                                <p>Доставка за 1 час в пределах МКАД. При заказе до 18:00.</p>
+                                <p class="option-price">500 ₽</p>
+                            </div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-content">
+                                <h4>Планируемая доставка</h4>
+                                <p>Выберите удобную дату и время доставки на неделю вперед.</p>
+                                <p class="option-price">200 ₽</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pharmacies Section -->
+                <div class="pharmacies-section">
+                    <h2 class="section-title">Наши аптеки</h2>
+                    <div class="pharmacies-grid">
+                        <!-- Аптека 1 -->
+                        <div class="pharmacy-card">
+                            <div class="pharmacy-header">
+                                <span class="pharmacy-name">ДоброТека на Ленинском</span>
+                                <span class="pharmacy-badge">Круглосуточно</span>
+                            </div>
+                            <div class="pharmacy-address">
+                                <span>Ленинский проспект, 45 (вход с торца)</span>
+                            </div>
+                            <div class="pharmacy-metro">
+                                <div class="metro-circle red"></div>
+                                <span class="metro-name">Ленинский проспект</span>
+                            </div>
+                            <div class="pharmacy-schedule">
+                                <div class="schedule-item">
+                                    <span>Круглосуточно</span>
+                                </div>
+                            </div>
+                            <div class="pharmacy-phone">
+                                <span>+7 (495) 123-45-67</span>
+                            </div>
+                            <div class="pharmacy-status">
+                                <span class="status-open">Открыто</span>
+                                <span class="distance">1.2 км от вас</span>
+                            </div>
+                        </div>
+
+                        <!-- Аптека 2 -->
+                        <div class="pharmacy-card">
+                            <div class="pharmacy-header">
+                                <span class="pharmacy-name">ДоброТека на Тверской</span>
+                                <span class="pharmacy-badge">Ежедневно</span>
+                            </div>
+                            <div class="pharmacy-address">
+                                
+                                <span>ул. Тверская, 15, стр. 2</span>
+                            </div>
+                            <div class="pharmacy-metro">
+                                <div class="metro-circle green"></div>
+                                <span class="metro-name">Тверская</span>
+                            </div>
+                            <div class="pharmacy-schedule">
+                                <div class="schedule-item">
+                                    
+                                    <span>08:00 - 23:00</span>
+                                </div>
+                            </div>
+                            <div class="pharmacy-phone">
+                            
+                                <span>+7 (495) 234-56-78</span>
+                            </div>
+                            <div class="pharmacy-status">
+                                <span class="status-open">Открыто</span>
+                                <span class="distance">2.5 км от вас</span>
+                            </div>
+                        </div>
+
+                        <!-- Аптека 3 -->
+                        <div class="pharmacy-card">
+                            <div class="pharmacy-header">
+                                <span class="pharmacy-name">ДоброТека на Бауманской</span>
+                                <span class="pharmacy-badge">Круглосуточно</span>
+                            </div>
+                            <div class="pharmacy-address">
+                                
+                                <span>Бауманская ул., 33/1</span>
+                            </div>
+                            <div class="pharmacy-metro">
+                                <div class="metro-circle blue"></div>
+                                <span class="metro-name">Бауманская</span>
+                            </div>
+                            <div class="pharmacy-schedule">
+                                <div class="schedule-item">
+                                    
+                                    <span>Круглосуточно</span>
+                                </div>
+                            </div>
+                            <div class="pharmacy-phone">
+                                
+                                <span>+7 (495) 345-67-89</span>
+                            </div>
+                            <div class="pharmacy-status">
+                                <span class="status-open">Открыто</span>
+                                <span class="distance">3.8 км от вас</span>
+                            </div>
+                        </div>
+
+                        <!-- Аптека 4 -->
+                        <div class="pharmacy-card">
+                            <div class="pharmacy-header">
+                                <span class="pharmacy-name">ДоброТека на Новослободской</span>
+                                <span class="pharmacy-badge">Ежедневно</span>
+                            </div>
+                            <div class="pharmacy-address">
+                                
+                                <span>ул. Новослободская, 24</span>
+                            </div>
+                            <div class="pharmacy-metro">
+                                <div class="metro-circle orange"></div>
+                                <span class="metro-name">Новослободская</span>
+                            </div>
+                            <div class="pharmacy-schedule">
+                                <div class="schedule-item">
+                                    
+                                    <span>09:00 - 22:00</span>
+                                </div>
+                            </div>
+                            <div class="pharmacy-phone">
+                                
+                                <span>+7 (495) 456-78-90</span>
+                            </div>
+                            <div class="pharmacy-status">
+                                <span class="status-open">Открыто</span>
+                                <span class="distance">4.1 км от вас</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+                <!-- FAQ Section -->
+                <div class="faq-section">
+                    <h2 class="section-title">Частые вопросы о доставке</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item active">
+                            <div class="faq-question">
+                                <span>Как быстро доставляете?</span>
+                                <p>⬇️</p>
+                            </div>
+                            <div class="faq-answer">
+                                Обычно доставка занимает 2-3 часа. Экспресс-доставка возможна за 1 час. В отдаленные районы доставка может занять до 24 часов.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Сколько стоит доставка?</span>
+                                 <p>⬇️</p>
+                            </div>
+                            <div class="faq-answer">
+                                Стандартная доставка - 300₽. Бесплатно при заказе от 2000₽. Экспресс-доставка - 500₽. Самовывоз бесплатный всегда.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>В какие районы доставляете?</span>
+                                 <p>⬇️</p>
+                            </div>
+                            <div class="faq-answer">
+                                Доставляем по всему городу и области. Точную стоимость и время доставки для вашего адреса можно узнать при оформлении заказа.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Можно ли оплатить картой курьеру?</span>
+                                 <p>⬇️</p>
+                            </div>
+                            <div class="faq-answer">
+                                Да, курьер принимает банковские карты, а также наличные. При самовывозе можно оплатить картой в аптеке.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3 class="footer-headline">Ассортимент, от которого здоровеешь уже при входе</h3>
+            <div class="footer-grid">
+                <div class="footer-contact">
+                    <p>Остались вопросы? Звоните</p>
+                    <div class="footer-phone">
+                        <div class="footer-phone-icon">
+                            <img src="img/Phone.png" alt="Телефон">
+                        </div>
+                        <span>+7 (980) 789-78-90</span>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="#">
+                        <img src="img/Telegram App.png" alt="Telegram">
+                    </a>
+                    <a href="#">
+                        <img src="img/Twitter Bird.png" alt="Twitter">
+                    </a>
+                    <a href="#">
+                        <img src="img/Facebook.png" alt="Facebook">
+                    </a>
+                    <a href="#">
+                        <img src="img/VK Circled.png" alt="VK">
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="catalog.html">Каталог</a>
+                    <a href="about.html">О нас</a>
+                    <a href="basket.html">Корзина</a>
+                    <a href="delivery.html">Доставка</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                © ДоброТека. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Обновление счетчиков в сайдбаре
+        function updateCounters() {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const favCount = document.getElementById('favourites-count');
+            const cartCount = document.getElementById('cart-count');
+            
+            if (favCount) {
+                favCount.textContent = favourites.length;
+                favCount.style.display = favourites.length > 0 ? 'flex' : 'none';
+            }
+            
+            if (cartCount) {
+                cartCount.textContent = cart.length;
+                cartCount.style.display = cart.length > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // FAQ аккордеон
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Запуск при загрузке
+        document.addEventListener('DOMContentLoaded', updateCounters);
+    </script>
+
+</body>
+</html>
